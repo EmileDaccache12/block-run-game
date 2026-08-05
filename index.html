@@ -6,10 +6,6 @@
     <title>block run game</title>
 
     <style>
-        body {
-            touch-action: manipulation;
-        }
-
         #block {
             background-color: rgb(209, 3, 3);
             width: 50px;
@@ -225,7 +221,7 @@
             let number = 0;
 
             function startGame() {
-                if (y !== height || exit.style.display === "block") return;
+                if (Math.abs(y - height) > 1 || exit.style.display === "block") return;
 
                 jump();
 
@@ -242,7 +238,6 @@
             }
 
             document.addEventListener("pointerdown", startGame);
-            document.addEventListener("touchstart", startGame);
 
             if (window.innerHeight > window.innerWidth) {
                 alert("Rotate your device to landscape and reload");
