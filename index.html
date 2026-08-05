@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>block game</title>
+
+    <style>
+        body {
+            touch-action: none;
+        }
+
+        #block {
+            background-color: rgb(209, 3, 3);
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            border-radius: 25%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #exit {
+            background-color: white;
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            z-index: 999;display: none;
+        }
+
+        #box {
+            background-color: green;
+            width: 74%;
+            height: 74%;
+            border-radius: 22%;
+        }
+
+        #ground {
+            width: 99%;
+            height: 3px;
+            background-color: black;
+            position: absolute;
+            box-shadow: 2px 2px 2.5px black;
+        }
+
+        .obsticles {
+            width: 23px;
+            height: 40px;
+            position: absolute;
+            background-color: rgb(3, 3, 198);
+        }
+
+        #start , #restart {
+            text-align: center;
+            margin-top: 35vh;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #restart {
+            display: none;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #score {
+            float: right;
+            margin: 20px;
+        }
+    </style>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded" , function() {
+            let running = false;
+
+            const block = document.getElementById("block");
+            const ground = document.getElementById("ground");
+
+            const start = document.getElementById("start");
+            const restart = document.getElementById("restart");
+
+            const exit = document.getElementById("exit");
+
+            const score = document.getElementById("score");
+
+            let x = 100;
+            let y = window.innerHeight / 2;
+
+            if (window.innerWidth >= 860) {
+                x = 240;
+            }
+
+            y = y + 18;
+
+            let base = y
+
+            block.style.left = x + "px";
+            block.style.top = y + "px";
+
+            exit.style.top = y + "px";
+
+            ground.style.top = y + 50.2 + "px";
+
+            let height = block.offsetTop;
+
+            function chunk1() {
+                let obsticleX = window.innerWidth;
+                let obsticleY = base + 10;
+
+                const hitbox = document.getElementById("box");
+
+                const obsticle1 = document.createElement("div");
+
+                obsticle1.className = "obsticles";
+
+                obsticle1.style.top = obsticleY + "px";
+                obsticle1.style.left = obsticleX + "px";
+
+                document.body.appendChild(obsticle1)
+
+                let move = setInterval(() => {
+                    if (collision(hitbox, obsticle1)) {
+                        running = false;
+                        exit.style.display = "block";
+
+                        restart.style.display = "flex";
+                        clearInterval(score_interval);
+
+                        document.addEventListener("click" , function() {
+                            window.location.reload();
+                        });
+                    }
+
+                    obsticleX  = obsticleX - 2.5;
+
+                    obsticle1.style.left = obsticleX + "px";
+
+                    if (obsticleX < 10) {
+                        clearInterval(move)
+                        obsticle1.remove();
+                    }
+                }, 8);
+            }
+
+            let counter = 0;
+
+            function game_loop() {
+
+                let random = Math.floor(Math.random() * 6) + 1;
+
+                if (random === 1) {
+                    random = 800;
+                } else if (random === 2) {
+                    random = 900;
+                } else if (random === 6) {
+                    random = 100;
+                } else if (random === 3) {
+                    random = 1400;
+                } else if (random === 4) {
+                    random = 100;
+                } else if (random === 5) {
+                    random = 1000;
+                }
+
+                if (random === 100) {
+                    counter++   ;
+                } else {
+                    counter = 0;
+                }
+
+                console.log (counter);
+
+                if (counter >= 4) {
+                    counter = 0;
+
+                    setTimeout(() => {
+                        game_loop();
+                    }, 1100);
+
+                    return;
+                }
+
+                let loop = setTimeout(() => {
+                    chunk1();
+                    game_loop();
+                }, random);
+            }
+
+            function collision(hitbox, obstacle) {
+                let hitboxRect = hitbox.getBoundingClientRect();
+                let obstacleRect = obstacle.getBoundingClientRect();
+
+                return (
+                    hitboxRect.left < obstacleRect.right &&
+                    hitboxRect.right > obstacleRect.left &&
+                    hitboxRect.top < obstacleRect.bottom &&
+                    hitboxRect.bottom > obstacleRect.top
+                );
+            }
+
+            function jump() {
+                let num = 3;
+
+                let jump = setInterval(() => {
+
+                    y = y - num;
+                    block.style.top = y + "px";
+
+                    num = num - 0.03;
+                    
+                    if (y >= height) {
+                        clearInterval(jump);
+                        y = height;
+                        block.style.top = y + "px";
+                    }
+                }, 1);
+            }
+
+            let score_interval;
+            let number = 0;
+
+            document.addEventListener("pointerdown" , function() {
+                if (y !== height || exit.style.display === "block") return;
+                jump();
+
+                if (running === true) return;
+                game_loop();
+
+                running = true;
+                start.style.display = "none";
+
+                score_interval = setInterval(() => {
+                    score.innerText = "Score:" + number;
+                    number++;
+                }, 300);
+            });
+
+            screen.orientation.lock("landscape");
+            if (window.innerHeight > window.innerWidth) {
+                alert("Rotate your device to landscape and reload");
+            }
+        });
+    </script>
+</head>
+<body>
+    <h2 id="score">Score: 0</h3>
+
+    <h1 id="start"><b>Tap To Start</b></h1>
+
+    <div id="restart">
+        <h1 id="lose">Game Over!</h1>
+        <h4 id="text">Tap Anywhere To Reload</h3>
+    </div>
+
+    <div id="block"><div id="box"></div></div>
+    <div id="ground"></div>
+    <div id="exit"></div>
+</body>
+</html>
