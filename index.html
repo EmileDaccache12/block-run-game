@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>block game</title>
+    <title>block run game</title>
 
     <style>
         body {
@@ -30,7 +30,6 @@
         }
 
         #box {
-            background-color: green;
             width: 74%;
             height: 74%;
             border-radius: 22%;
@@ -199,14 +198,14 @@
             }
 
             function jump() {
-                let num = 3;
+                let num = 2.8;
 
                 let jump = setInterval(() => {
 
                     y = y - num;
                     block.style.top = y + "px";
 
-                    num = num - 0.03;
+                    num = num - 0.028;
                     
                     if (y >= height) {
                         clearInterval(jump);
@@ -243,7 +242,7 @@
     </script>
 </head>
 <body>
-    <h2 id="score">Score: 0</h3>
+    <h3 id="score">Score: 0</h3>
 
     <h1 id="start"><b>Tap To Start</b></h1>
 
