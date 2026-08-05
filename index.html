@@ -7,7 +7,7 @@
 
     <style>
         body {
-            touch-action: none;
+            touch-action: manipulation;
         }
 
         #block {
@@ -224,16 +224,14 @@
             let score_interval;
             let number = 0;
 
-            let mobile = true;
-            document.addEventListener("pointerdown" , function() {
-                mobile = false;
-
+            function startGame() {
                 if (y !== height || exit.style.display === "block") return;
+
                 jump();
 
                 if (running === true) return;
-                game_loop();
 
+                game_loop();
                 running = true;
                 start.style.display = "none";
 
@@ -241,26 +239,10 @@
                     score.innerText = "Score:" + number;
                     number++;
                 }, 300);
-            });
+            }
 
-            document.addEventListener("click" , function() {
-                if (mobile !== false) return;
-
-                if (y !== height || exit.style.display === "block") return;
-                jump();
-
-                if (running === true) return;
-                game_loop();
-
-                running = true;
-                start.style.display = "none";
-
-                score_interval = setInterval(() => {
-                    score.innerText = "Score:" + number;
-                    number++;
-                }, 300);
-            });
-
+            document.addEventListener("pointerdown", startGame);
+            document.addEventListener("touchstart", startGame);
 
             if (window.innerHeight > window.innerWidth) {
                 alert("Rotate your device to landscape and reload");
