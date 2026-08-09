@@ -140,10 +140,6 @@
 
                         restart.style.display = "flex";
                         clearInterval(score_interval);
-
-                        document.addEventListener("pointerdown" , function() {
-                            window.location.reload();
-                        });
                     }
 
                     obsticleX  = obsticleX - 2.5;
@@ -235,6 +231,11 @@
             let number = 0;
 
             document.addEventListener("pointerdown", function() {
+                if (exit.style.display === "block") {
+                    window.location.reload();
+                    return;
+                }
+
                 if (Math.abs(y - height) > 3 || exit.style.display === "block") return;
 
                 jump();
