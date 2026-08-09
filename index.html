@@ -77,6 +77,11 @@
             float: right;
             margin: 20px;
         }
+
+        #lose , #text {
+            color: rgb(207, 10, 10);
+            z-index: 9999;
+        }
     </style>
     
     <script>
@@ -136,7 +141,7 @@
                         restart.style.display = "flex";
                         clearInterval(score_interval);
 
-                        document.addEventListener("click" , function() {
+                        document.addEventListener("pointerdown" , function() {
                             window.location.reload();
                         });
                     }
@@ -258,8 +263,8 @@
     <h1 id="start"><b>Tap To Start</b></h1>
 
     <div id="restart">
-        <h1 id="lose">Game Over!</h1>
-        <h4 id="text">Tap Anywhere To Reload</h3>
+        <h1 id="lose"><b>Game Over!</b></h1>
+        <h3 id="text"><b>Tap Anywhere To Reload</b></h3>
     </div>
 
     <div id="block"><div id="box"></div></div>
