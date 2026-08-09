@@ -6,6 +6,15 @@
     <title>block run game</title>
 
     <style>
+
+        body {
+            background-image: url(blue-pixel-bg-hor.png); 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            background-size: cover; 
+            background-attachment: fixed; 
+        }
+
         #block {
             background-color: rgb(209, 3, 3);
             width: 50px;
@@ -44,7 +53,7 @@
             width: 23px;
             height: 40px;
             position: absolute;
-            background-color: rgb(3, 3, 198);
+            background-color: rgb(3, 3, 3);
         }
 
         #start , #restart {
@@ -105,7 +114,7 @@
             let height = block.offsetTop;
 
             function chunk1() {
-                let obsticleX = window.innerWidth;
+                let obsticleX = window.innerWidth - 25;
                 let obsticleY = base + 10;
 
                 const hitbox = document.getElementById("box");
@@ -220,8 +229,8 @@
             let score_interval;
             let number = 0;
 
-            function startGame() {
-                if (Math.abs(y - height) > 1 || exit.style.display === "block") return;
+            document.addEventListener("pointerdown", function() {
+                if (Math.abs(y - height) > 3 || exit.style.display === "block") return;
 
                 jump();
 
@@ -232,12 +241,10 @@
                 start.style.display = "none";
 
                 score_interval = setInterval(() => {
-                    score.innerText = "Score: " + number;
+                    score.innerText = "Score:" + number;
                     number++;
                 }, 300);
-            }
-
-            document.addEventListener("pointerdown", startGame);
+            });
 
             if (window.innerHeight > window.innerWidth) {
                 alert("Rotate your device to landscape and reload");
