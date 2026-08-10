@@ -209,21 +209,28 @@
                 );
             }
 
+            
             function jump() {
                 let num = 2.8;
+                let rotation = 0;
 
                 let jump = setInterval(() => {
 
                     y = y - num;
                     block.style.top = y + "px";
 
+                    rotation += 1;
+                    block.style.transform = `rotate(${rotation}deg)`;
+
                     num = num - 0.028;
-                    
+
                     if (y >= height) {
                         clearInterval(jump);
                         y = height;
                         block.style.top = y + "px";
+                        block.style.transform = "rotate(360deg)";
                     }
+
                 }, 1);
             }
 
