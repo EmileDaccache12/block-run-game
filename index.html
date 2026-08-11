@@ -8,11 +8,17 @@
     <style>
 
         body {
-            background-image: url(blue-pixel-bg-hor.png); 
-            background-repeat: no-repeat; 
-            background-position: center; 
-            background-size: cover; 
-            background-attachment: fixed; 
+            background: url('blue-pixel-bg-hor.png') repeat-x center top;
+            animation: scrollBg 8s linear infinite; 
+        }
+
+        @keyframes scrollBg {
+            from {
+                background-position-x: 0px;
+            }
+            to {
+                background-position-x: -1600px;
+            }
         }
 
         #block {
@@ -142,7 +148,7 @@
                         clearInterval(score_interval);
                     }
 
-                    obsticleX  = obsticleX - 2.5;
+                    obsticleX = obsticleX - 2;
 
                     obsticle1.style.left = obsticleX + "px";
 
@@ -150,7 +156,7 @@
                         clearInterval(move)
                         obsticle1.remove();
                     }
-                }, 8);
+                }, 6);
             }
 
             let counter = 0;
@@ -164,11 +170,11 @@
                 } else if (random === 2) {
                     random = 900;
                 } else if (random === 6) {
-                    random = 100;
+                    random = 83;
                 } else if (random === 3) {
                     random = 1400;
                 } else if (random === 4) {
-                    random = 100;
+                    random = 83;
                 } else if (random === 5) {
                     random = 1000;
                 }
@@ -179,15 +185,14 @@
                     counter = 0;
                 }
 
-                console.log (counter);
-
                 if (counter >= 4) {
                     counter = 0;
 
                     setTimeout(() => {
                         game_loop();
-                    }, 1100);
+                    }, 1050);
 
+                    console.log("-------");
                     return;
                 }
 
@@ -211,7 +216,7 @@
 
             
             function jump() {
-                let num = 2.8;
+                let num = 2.9;
                 let rotation = 0;
 
                 let jump = setInterval(() => {
@@ -222,7 +227,7 @@
                     rotation += 1;
                     block.style.transform = `rotate(${rotation}deg)`;
 
-                    num = num - 0.028;
+                    num = num - 0.0298;
 
                     if (y >= height) {
                         clearInterval(jump);
